@@ -1,4 +1,4 @@
-package mz.org.idmed.metadata.identifierType
+package mz.org.idmed.metadata.protection
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.CREATED
@@ -11,70 +11,69 @@ import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 
 @ReadOnly
-class IdentifierTypeController {
+class RoleController {
 
-    IdentifierTypeService identifierTypeService
+    RoleService roleService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond identifierTypeService.list(params), model:[identifierTypeCount: identifierTypeService.count()]
+        respond roleService.list(params), model:[roleCount: roleService.count()]
     }
 
     def show(Long id) {
-        respond identifierTypeService.get(id)
+        respond roleService.get(id)
     }
 
     @Transactional
-    def save(IdentifierType identifierType) {
-        identifierType.beforeInsert()
-        if (identifierType == null) {
+    def save(Role role) {
+        if (role == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (role.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond role.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            roleService.save(role)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond role.errors
             return
         }
 
-        respond identifierType, [status: CREATED, view:"show"]
+        respond role, [status: CREATED, view:"show"]
     }
 
     @Transactional
-    def update(IdentifierType identifierType) {
-        if (identifierType == null) {
+    def update(Role role) {
+        if (role == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (role.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond role.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            roleService.save(role)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond role.errors
             return
         }
 
-        respond identifierType, [status: OK, view:"show"]
+        respond role, [status: OK, view:"show"]
     }
 
     @Transactional
     def delete(Long id) {
-        if (id == null || identifierTypeService.delete(id) == null) {
+        if (id == null || roleService.delete(id) == null) {
             render status: NOT_FOUND
             return
         }

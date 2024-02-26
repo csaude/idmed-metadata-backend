@@ -1,4 +1,4 @@
-package mz.org.idmed.metadata.identifierType
+package mz.org.idmed.metadata.protection
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.CREATED
@@ -11,70 +11,69 @@ import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 
 @ReadOnly
-class IdentifierTypeController {
+class SecUserController {
 
-    IdentifierTypeService identifierTypeService
+    SecUserService secUserService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond identifierTypeService.list(params), model:[identifierTypeCount: identifierTypeService.count()]
+        respond secUserService.list(params), model:[secUserCount: secUserService.count()]
     }
 
     def show(Long id) {
-        respond identifierTypeService.get(id)
+        respond secUserService.get(id)
     }
 
     @Transactional
-    def save(IdentifierType identifierType) {
-        identifierType.beforeInsert()
-        if (identifierType == null) {
+    def save(SecUser secUser) {
+        if (secUser == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (secUser.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond secUser.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            secUserService.save(secUser)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond secUser.errors
             return
         }
 
-        respond identifierType, [status: CREATED, view:"show"]
+        respond secUser, [status: CREATED, view:"show"]
     }
 
     @Transactional
-    def update(IdentifierType identifierType) {
-        if (identifierType == null) {
+    def update(SecUser secUser) {
+        if (secUser == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (secUser.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond secUser.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            secUserService.save(secUser)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond secUser.errors
             return
         }
 
-        respond identifierType, [status: OK, view:"show"]
+        respond secUser, [status: OK, view:"show"]
     }
 
     @Transactional
     def delete(Long id) {
-        if (id == null || identifierTypeService.delete(id) == null) {
+        if (id == null || secUserService.delete(id) == null) {
             render status: NOT_FOUND
             return
         }

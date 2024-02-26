@@ -1,6 +1,7 @@
 package mz.org.idmed.metadata.drug
 
 import grails.gorm.transactions.Transactional
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import mz.org.idmed.metadata.clinicalService.ClinicalService
 import mz.org.idmed.metadata.form.Form
@@ -12,9 +13,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 
-@Transactional
+// @Transactional
 @EnableScheduling
 @Slf4j
+@CompileStatic
 class RestGetDrugCentralToolService {
 
     private static final NAME = "RestGetDrugCentralToolService"
@@ -35,7 +37,7 @@ class RestGetDrugCentralToolService {
 
     static lazyInit = false
 
- @Scheduled(fixedDelay = 60000L)
+ //@Scheduled(fixedDelay = 60000L)
  void execute() {
      /*
      def offset = 0

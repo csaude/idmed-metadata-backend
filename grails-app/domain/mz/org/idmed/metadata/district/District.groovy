@@ -22,7 +22,7 @@ class District {
         }
     }
     static constraints = {
-        code nullable: false, unique: true
+        code nullable: false,unique: ['province']
         description nullable: false
     }
 }
