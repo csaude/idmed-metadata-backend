@@ -4,9 +4,9 @@ grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/'
 grails.plugin.springsecurity.useSecurityEventListener = true
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'mz.org.csaude.metadata.protection.SecUser'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'mz.org.csaude.metadata.protection.UserRole'
-grails.plugin.springsecurity.authority.className = 'mz.org.csaude.metadata.protection.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'mz.org.idmed.metadata.protection.SecUser'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'mz.org.idmed.metadata.protection.UserRole'
+grails.plugin.springsecurity.authority.className = 'mz.org.idmed.metadata.protection.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               access: ['permitAll']],
 	[pattern: '/error',          access: ['permitAll']],
@@ -22,15 +22,15 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/api/', 				access: ['permitAll']],
 	[pattern: '/dbconsole/**',		access: ['permitAll']],
 	[pattern: '/plugins/**', 		access: ['permitAll']],
-	[pattern: '/secUser/**', 		access: ['permitAll']],
-	[pattern: '/user/**', 			access: ['ROLE_ADMIN']],
-	[pattern: '/secRole/**', 		access: ['ROLE_ADMIN']],
-	[pattern: '/role/**', 			access: ['ROLE_ADMIN']],
 	[pattern: '/securityInfo/**', 	access: ['ROLE_ADMIN']],
 	[pattern: '/registationCode/**', access: ['ROLE_ADMIN']],
 	[pattern: '/api/clients/**', 		access: ['ROLE_ADMIN']],
 	[pattern: '/api/product/**', 		access: ['ROLE_ADMIN']],
 	[pattern: '/api/pharmaceuticalForm/**', 		access: ['ROLE_ADMIN']],
+	[pattern: '/secUser/**', 		access: ['ROLE_ADMIN']],
+	[pattern: '/user/**', 			access: ['ROLE_ADMIN']],
+	[pattern: '/secRole/**', 		access: ['ROLE_ADMIN']],
+	[pattern: '/role/**', 			access: ['ROLE_ADMIN']],
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
@@ -39,7 +39,6 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 	[pattern: '/**/css/**',      filters: 'none'],
 	[pattern: '/**/images/**',   filters: 'none'],
 	[pattern: '/**/favicon.ico', filters: 'none'],
-	[pattern: '/**',             filters: 'JOINED_FILTERS']
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [

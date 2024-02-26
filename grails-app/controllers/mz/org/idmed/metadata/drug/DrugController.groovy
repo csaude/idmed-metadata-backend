@@ -1,6 +1,10 @@
 package mz.org.idmed.metadata.drug
 
+import grails.converters.JSON
+import grails.rest.RestfulController
 import grails.validation.ValidationException
+import mz.org.idmed.metadata.json.JSONSerializer
+
 import static org.springframework.http.HttpStatus.CREATED
 import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.NO_CONTENT
@@ -10,14 +14,18 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 
-@ReadOnly
-class DrugController {
+
+class DrugController extends RestfulController {
 
     DrugService drugService
+    RestGetDrugCentralToolService restGetDrugCentralToolService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    DrugController() {
+        super(Drug)
+    }
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond drugService.list(params), model:[drugCount: drugService.count()]
@@ -79,5 +87,9 @@ class DrugController {
         }
 
         render status: NO_CONTENT
+    }
+
+    def getDrugsFromMetadataServer(int offset) {
+        render JSONSerializer.setObjectListJsonResponse(restGetDrugCentralToolService.loadDrugsFromCentralTool(offset)) as JSON
     }
 }

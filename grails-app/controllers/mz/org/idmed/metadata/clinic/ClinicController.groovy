@@ -1,4 +1,4 @@
-package mz.org.idmed.metadata.identifierType
+package mz.org.idmed.metadata.clinic
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.CREATED
@@ -11,70 +11,69 @@ import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 
 @ReadOnly
-class IdentifierTypeController {
+class ClinicController {
 
-    IdentifierTypeService identifierTypeService
+    ClinicService clinicService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond identifierTypeService.list(params), model:[identifierTypeCount: identifierTypeService.count()]
+        respond clinicService.list(params), model:[clinicCount: clinicService.count()]
     }
 
     def show(Long id) {
-        respond identifierTypeService.get(id)
+        respond clinicService.get(id)
     }
 
     @Transactional
-    def save(IdentifierType identifierType) {
-        identifierType.beforeInsert()
-        if (identifierType == null) {
+    def save(Clinic clinic) {
+        if (clinic == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (clinic.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond clinic.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            clinicService.save(clinic)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond clinic.errors
             return
         }
 
-        respond identifierType, [status: CREATED, view:"show"]
+        respond clinic, [status: CREATED, view:"show"]
     }
 
     @Transactional
-    def update(IdentifierType identifierType) {
-        if (identifierType == null) {
+    def update(Clinic clinic) {
+        if (clinic == null) {
             render status: NOT_FOUND
             return
         }
-        if (identifierType.hasErrors()) {
+        if (clinic.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond identifierType.errors
+            respond clinic.errors
             return
         }
 
         try {
-            identifierTypeService.save(identifierType)
+            clinicService.save(clinic)
         } catch (ValidationException e) {
-            respond identifierType.errors
+            respond clinic.errors
             return
         }
 
-        respond identifierType, [status: OK, view:"show"]
+        respond clinic, [status: OK, view:"show"]
     }
 
     @Transactional
     def delete(Long id) {
-        if (id == null || identifierTypeService.delete(id) == null) {
+        if (id == null || clinicService.delete(id) == null) {
             render status: NOT_FOUND
             return
         }
