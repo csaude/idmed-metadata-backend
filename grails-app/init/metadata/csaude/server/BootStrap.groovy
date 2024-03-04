@@ -75,8 +75,7 @@ class BootStrap {
 
     List<Object> listServers() {
         List<Object> provincialServerList = new ArrayList<>()
-        provincialServerList.add(new LinkedHashMap(id: '7036157a-61c3-4515-9ab8-fc68359d9402', code: '13', urlPath: 'http://172.104.203.103:', port: '3030', destination: 'C_SAUDE_METADATA', username: 'admin', password: 'admin'))
-
+        provincialServerList.add(new LinkedHashMap(id: '7036157a-61c3-4515-9ab8-fc68359d9402', code: '13', urlPath: 'http://172.16.60.41:', port: '3030', destination: 'C_SAUDE_METADATA', username: 'admin', password: 'admin'))
         return provincialServerList
     }
 
