@@ -11,6 +11,7 @@
         </encoder>
     </appender>
 
+    <logger name="LOGGER" class ="mz.org.idmed.metadata.drug.RestGetDrugCentralToolService" level="INFO"/>
     <root level="error">
         <appender-ref ref="STDOUT" />
     </root>

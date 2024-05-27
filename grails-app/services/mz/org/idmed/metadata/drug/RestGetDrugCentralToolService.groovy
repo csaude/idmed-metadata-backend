@@ -23,35 +23,21 @@ class RestGetDrugCentralToolService {
 
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger("RestGetDrugCentralToolService");
+            .getLogger("LOGGER");
 
 
     RestClient restClient = new RestClient()
     private static final String FORMAT_STRING = '| %1$-10s |  %2$-40s|  %3$-30s|';
 
-    private static final String MESSAGE = String.format(
-            FORMAT_STRING,
-            "Id Dispensa",
-            "Nome",
-            "NID");
+
 
     static lazyInit = false
 
- //@Scheduled(fixedDelay = 60000L)
+    @Scheduled(cron = "0 0 0 2 * ?")
  void execute() {
-     /*
-     def offset = 0
-     def count = loadDrugsFromCentralTool(offset).size()
-
-     if (count > 0) {
-         offset = ++offset
-         print(offset)
-         loadDrugsFromCentralTool(offset)
-     }
-      */
      def offset = 0
      def count
-
+        LOGGER.info("Iniciando a Busca de Medicamentos")
      while (true) {
           count = loadDrugsFromCentralTool(offset).size()
 
@@ -60,6 +46,7 @@ class RestGetDrugCentralToolService {
              print(offset)
 
          } else {
+             LOGGER.info("Fim da Busca de Medicamentos")
              break // Exit the loop when count becomes zero
          }
      }

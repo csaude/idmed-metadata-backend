@@ -18,6 +18,7 @@ class Clinic {
     boolean mainClinic
     boolean active
     String uuid
+    String matchFC
     static belongsTo = []
     // static hasMany = [sectors: ClinicSector]
 
@@ -38,5 +39,6 @@ class Clinic {
         clinicName nullable: false, unique: ['province','district']
         nationalClinic nullable: true
         uuid unique: true
+        matchFC nullable: true
     }
 }
