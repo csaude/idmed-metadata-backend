@@ -1,17 +1,21 @@
 package metadata.csaude.server
 
 import grails.gorm.transactions.Transactional
+import groovy.sql.Sql
 import mz.org.idmed.metadata.clinic.Clinic
 import mz.org.idmed.metadata.clinicalService.ClinicalService
 import mz.org.idmed.metadata.district.District
+import mz.org.idmed.metadata.drug.Drug
 import mz.org.idmed.metadata.facilityType.FacilityType
 import mz.org.idmed.metadata.identifierType.IdentifierType
 import mz.org.idmed.metadata.protection.Role
 import mz.org.idmed.metadata.protection.SecUser
 import mz.org.idmed.metadata.protection.UserRole
 import mz.org.idmed.metadata.province.Province
+import mz.org.idmed.metadata.restUtils.RestClient
 import mz.org.idmed.metadata.server.Server
 import mz.org.idmed.metadata.serviceAttributeType.ClinicalServiceAttributeType
+import org.grails.web.json.JSONArray
 
 class BootStrap {
 
@@ -37,7 +41,8 @@ class BootStrap {
         //   initiateRegimensList()
         Clinic.withTransaction {
 //            initDefaultClinic()
-            initClinic()
+      //      initClinic()
+        //    compareClinics()
         }
     }
 
@@ -1198,6 +1203,29 @@ class BootStrap {
         districtList.add(new LinkedHashMap(id: '9D45427F-4546-4386-8DC3-5E2ABCC5B426', code: '16', description: 'Sanga', province: Province.findByCode('01')))
 
         return districtList
+    }
+
+
+    def compareClinics() {
+
+        RestClient restClient = new RestClient()
+        println("++++++++++INICIO CARREGAMENTO Clinic++++++++++")
+        Clinic.withTransaction {
+            String urlPath = "/api/clients"
+            def response = restClient.requestGetDataOnMetadataServer(urlPath) as JSONArray
+            def clinics = Clinic.findAll()
+            for (def clientObject : response) {
+                clinics.each { clinic ->
+                    String normalizedStr1 = clientObject.getAt("code").replaceFirst("^0+", "");
+                      println(clinic.code.equals(normalizedStr1))
+                    if (clinic.code.equals(normalizedStr1)) {
+                        clinic.matchFC = clinic.code
+                        clinic.save(flush: true, failOnError: true)
+                    }
+                }
+            }
+        }
+
     }
     def destroy = {
     }
